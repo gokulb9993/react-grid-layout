@@ -114,7 +114,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     onResizeStart: noop,
     onResize: noop,
     onResizeStop: noop,
-    onDrop: noop
+    onDrop: noop,
+    onDropDragOver: noop
   };
 
   state: State = {
@@ -635,7 +636,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
 
     const {
       droppingItem,
-      onDragOver,
+      onDropDragOver,
       margin,
       cols,
       rowHeight,
@@ -645,10 +646,10 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     } = this.props;
     // Allow user to customize the dropping item or short-circuit the drop based on the results
     // of the `onDragOver(e: Event)` callback.
-    const onDragOverResult = onDragOver?.(e);
-    if (onDragOverResult === false) return;
+    const onDragOverResult = onDropDragOver?.(e);
+    if (onDragOverResult === false) return false;
     const finalDroppingItem = { ...droppingItem, ...onDragOverResult };
-    
+
     const { layout } = this.state;
     // This is relative to the DOM element that this event fired for.
     const { layerX, layerY } = e.nativeEvent;
